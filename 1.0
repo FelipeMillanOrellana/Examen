@@ -325,14 +325,6 @@ INSERT INTO Telefono_afiliados VALUES(2, 'Telefono Pedro');
 INSERT INTO Telefono_afiliados VALUES(3, 'Telefono Judas');
 INSERT INTO Telefono_afiliados VALUES(4, 'Telefono Lazaro');
 
-INSERT INTO Telefono_postulante VALUES (1, '226898438');
-INSERT INTO Telefono_postulante VALUES (2, '954731630');
-INSERT INTO Telefono_postulante VALUES (3, '226538438');
-
-INSERT INTO Postulante VALUES(1, 'Francisco');
-INSERT INTO Postulante VALUES(1, 'Pablo');
-INSERT INTO Postulante VALUES(1, 'José');
-
 INSERT INTO Nacionalidad VALUES(1, 'Chilena');
 INSERT INTO Nacionalidad VALUES(2, 'Bolibiana');
 INSERT INTO Nacionalidad VALUES(3, 'Peruana');
@@ -344,7 +336,7 @@ INSERT INTO Afiliados VALUES(2, 'Pedro');
 INSERT INTO Afiliados VALUES(3, 'Judas');
 INSERT INTO Afiliados VALUES(4, 'Lazaro');
 
-INSERT INTO Postulante VALUES(1,'K', 'Juan', 'Aurelio', 'Fernandez', '04/06/89', '',123123,1,2,1,2,1,2,1,1);
+INSERT INTO Afiliado VALUES(1,'K', 'Juan', 'Aurelio', 'Fernandez', '04/06/89', '',123123,1,2,1,2,3,1,1,1,1);
 
 --5) SELECT
 SELECT * FROM Regiones;
@@ -353,9 +345,6 @@ SELECT * FROM Comuna;
 SELECT * FROM Tipo_telefono;
 SELECT * FROM Telefono;
 SELECT * FROM Telefono_afiliados;
-SELECT * FROM Telefono_postulante;
-SELECT * FROM Postulante;
 SELECT * FROM Nacionalidad;
 SELECT * FROM Empresa;
 SELECT * FROM Afiliados;
-SELECT * FROM Postulante;
