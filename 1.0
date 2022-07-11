@@ -2,59 +2,57 @@
 ALTER SESSION SET NLS_DATE_FORMAT = 'DD/MM/YYYY';
 
 --0)Borrar tablas
-DROP TABLE Historial_pago;
-DROP TABLE Pago;
-DROP TABLE Banco;
-DROP TABLE Pago_cheque;
-DROP TABLE Tipo_de_pago;
-DROP TABLE Afiliados;
-DROP TABLE Telefono_afiliado;
-DROP TABLE Telefono;
-DROP TABLE Tipo_telefono;
-DROP TABLE Beneficios;
-DROP TABLE Usos_beneficios;
-DROP TABLE Telefono_postulante;
-DROP TABLE Postulante;
-DROP TABLE Comuna;
-DROP TABLE Provincia;
-DROP TABLE Region;
-DROP TABLE Curriculum_vitae;
-DROP TABLE Cargas;
 DROP TABLE Postulante_discapacidad;
-DROP TABLE Discapacidad;
+DROP TABLE Telefono_afiliado;
+DROP TABLE Cargas;
+DROP TABLE Curriculum_vitae;
 DROP TABLE Aseguradora_vehículo;
 DROP TABLE Vehículos;
-DROP TABLE Moderlos;
+DROP TABLE Colores;
+DROP TABLE Modelos;
 DROP TABLE Marcas;
 DROP TABLE Tipo_vehículo;
-DROP TABLE Colores;
-DROP TABLE Aseguradora_vehículos;
+DROP TABLE Region;
+DROP TABLE Afiliado_discapacidad;
+DROP TABLE Discapacidad;
+DROP TABLE Afiliado_beneficio;
+DROP TABLE Beneficios;
+DROP TABLE Pago;
+DROP TABLE Forma_pago;
+DROP TABLE Banco;
+DROP TABLE Cheque;
+DROP TABLE Tipo_de_pago;
 DROP TABLE Afiliado;
 DROP TABLE Empresa;
-
+DROP TABLE Aseguradora;
+DROP TABLE Nacionalidad;
+DROP TABLE Postulantes;
+DROP TABLE Telefono_postulante;
+DROP TABLE Telefono;
+DROP TABLE Tipo_telefono;
+DROP TABLE Comuna;
+DROP TABLE Provincia;
 --1) TABLAS
 CREATE TABLE Empresa(
     id_empresa                                      NUMBER NOT NULL,
-    nombre                                          VARCHAR(250) NOT NULL                                        
+    nombre                                          VARCHAR(250) NOT NULL,
+    id_Aseguradora                                  NUMBER NOT NULL
 );
-
-CREATE TABLE Aseguradora_vehículos(
+CREATE TABLE Aseguradora(
     id_aseguradora                                  NUMBER NOT NULL,
-    id_vehículos                                    NUMBER NOT NULL,
-    nombre                                          VARCHAR2 (250) NOT NULL,
-    empresa_id_empresa                              NUMBER NOT NULL
+    nombre                                          VARCHAR2 (250) NOT NULL
 );
 CREATE TABLE Aseguradora_vehículo(
-    vehículos_patente                               NUMBER NOT NULL,
-    aseguradora_vehículos_id_vehículos              NUMBER NOT NULL
+    patente                                         NUMBER NOT NULL,
+    id_aseguradora                                  NUMBER NOT NULL
 );
 CREATE TABLE Vehículos(
     patente                                         NUMBER NOT NULL,
-    n°_de_chasis                                    NUMBER NOT NULL,
-    n°_de_motor                                     NUMBER NOT NULL,
-    tipo_vehículo_Id_nombre                         NUMBER NOT NULL,
-    modelos_id_modelos                              NUMBER NOT NULL,
-    colores_id_color                                NUMBER NOT NULL       
+    numero_de_chasis                                NUMBER NOT NULL,
+    numero_de_motor                                 NUMBER NOT NULL,
+    id_tipo_vehículo                                NUMBER NOT NULL,
+    id_modelos                                      NUMBER NOT NULL,
+    id_color                                        NUMBER NOT NULL       
 );
 CREATE TABLE Colores(
     id_color                                        NUMBER NOT NULL,
@@ -63,22 +61,15 @@ CREATE TABLE Colores(
 CREATE TABLE Modelos(
     id_modelos                                      NUMBER NOT NULL,
     nombre                                          VARCHAR2 (250) NOT NULL,
-    marcas_id_marcas                                NUMBER NOT NULL
+    id_marcas                                       NUMBER NOT NULL
 );
 CREATE TABLE Marcas(
     id_marcas                                       NUMBER NOT NULL,
     nombre                                          VARCHAR2 (250) NOT NULL
 );
 CREATE TABLE Tipo_vehículo(
-    id_nombre                                       NUMBER NOT NULL,
+    id_tipo_vehículo                                NUMBER NOT NULL,
     nombre                                          VARCHAR2 (250) NOT NULL
-);
-CREATE TABLE Registro_historico(
-    id_registro                                     NUMBER NOT NULL,
-    fecha_creación_solicitud                        DATE NOT NULL,
-    conjunto_horas                                  VARCHAR2 (250) NOT NULL,
-    empresa_id_empresa                              NUMBER NOT NULL,
-    postulante_rut_postulante                       NUMBER NOT NULL
 );
 CREATE TABLE Postulantes(
     rut_postulante                                  NUMBER NOT NULL,
@@ -87,12 +78,14 @@ CREATE TABLE Postulantes(
     segundo_nombre                                  VARCHAR2 (250) NOT NULL,
     primer_apellido                                 VARCHAR2 (250) NOT NULL,
     segundo_apellido                                VARCHAR2 (250) NOT NULL,
-    comuna_Id_comuna                                NUMBER NOT NULL,
-    telefono_postulante_telefono_postulante_iD      NUMBER NOT NULL
+    id_comuna                                       NUMBER NOT NULL,
+    telefono_postulante_id                          NUMBER NOT NULL,
+    numero_de_pasaporte                             NUMBER NOT NULL,
+    fecha                                           DATE NOT NULL
 );
 CREATE TABLE Postulante_discapacidad(
-    postulante_rut_postulante                       NUMBER NOT NULL,
-    discapacidad_id_discapacidad                    NUMBER NOT NULL
+    rut_postulante                                  NUMBER NOT NULL,
+    id_discapacidad                                 NUMBER NOT NULL
 );
 CREATE TABLE Discapacidad(
     id_discapacidad                                 NUMBER NOT NULL,
@@ -102,17 +95,17 @@ CREATE TABLE Curriculum_vitae(
     id_curriculum                                   NUMBER NOT NULL,
     datos_personales_postulante                     VARCHAR2 (250) NOT NULL,
     correo_electronico                              VARCHAR2 (250) NOT NULL,
-    postulante_rut_postulante                       NUMBER NOT NULL
+    rut_postulante                                  NUMBER NOT NULL
 );
 CREATE TABLE Comuna(
     id_comuna                                       NUMBER NOT NULL,
     nombre                                          VARCHAR2 (250) NOT NULL,
-    provincia_id_provincia                          NUMBER NOT NULL
+    id_provincia                                    NUMBER NOT NULL
 );
 CREATE TABLE Provincia(
     id_provincia                                    NUMBER NOT NULL,
     nombre                                          VARCHAR2 (250) NOT NULL,
-    region_id_region                                NUMBER NOT NULL
+    id_region                                       NUMBER NOT NULL
 );
 CREATE TABLE Region(
     id_region                                       NUMBER NOT NULL,
@@ -126,225 +119,226 @@ CREATE TABLE Cargas(
     apellido_materno                                VARCHAR2 (250) NOT NULL,
     fecha_de_nacimiento                             DATE NOT NULL,
     tipo_de_parentesco                              VARCHAR2 (250) NOT NULL,
-    postulante_rut_postulante                       NUMBER NOT NULL
+    rut_postulante                                  NUMBER NOT NULL
 );
 CREATE TABLE Telefono_postulante(
-    telefono_id_telefono                            NUMBER NOT NULL,
-    telefono_postulante_iD                          NUMBER NOT NULL
+    id_telefono                                     NUMBER NOT NULL,
+    telefono_postulante_id                          NUMBER NOT NULL
 );
 CREATE TABLE Telefono(
     id_telefono                                     NUMBER NOT NULL,
-    numero_de_telefono                              NUMBER NOT NULL
+    numero_de_telefono                              NUMBER NOT NULL,
+    id_tipo_telefono                                NUMBER (9) NOT NULL
 );
 CREATE TABLE Telefono_afiliado(
-    Telefono_Id_telefono                            NUMBER NOT NULL,
-    Estado                                          VARCHAR2 NOT NULL
+    id_telefono                                     NUMBER NOT NULL
 );
-CREATE TABLE Afiliados(
-    rut_afiliado                                  NUMBER NOT NULL,
+CREATE TABLE Tipo_telefono(
+    id_tipo_telefono                                NUMBER (9),
+    nombre                                          VARCHAR2 (250)
+);
+CREATE TABLE Afiliado(
+    rut_afiliado                                    NUMBER NOT NULL,
     fecha_de_nacimiento                             DATE NOT NULL,
     primer_nombre                                   VARCHAR2 (250) NOT NULL,
     segundo_nombre                                  VARCHAR2 (250) NOT NULL,
     primer_apellido                                 VARCHAR2 (250) NOT NULL,
     segundo_apellido                                VARCHAR2 (250) NOT NULL,
-    nacionalidad_Número_de_pasaporte                NUMBER NOT NULL,
-    empresa_Id_empresa                              NUMBER NOT NULL
+    numero_de_pasaporte                             NUMBER NOT NULL,
+    id_empresa                                      NUMBER NOT NULL
+);
+CREATE TABLE Afiliado_discapacidad(
+    id_discapacidad                                 NUMBER NOT NULL,
+    rut_afiliado                                    NUMBER (11) NOT NULL
 );
 CREATE TABLE Nacionalidad(
     numero_de_pasaporte                             NUMBER NOT NULL,
     nombre_pais                                     VARCHAR2 (250) NOT NULL,
-    postulante_Rut_postulante                       NUMBER NOT NULL
+    rut_postulante                                  NUMBER NOT NULL
 );
 CREATE TABLE Afiliado_beneficio(
-    afiliado_rut_postulante                         NUMBER NOT NULL,
-    beneficios_id_beneficio                         NUMBER NOT NULL,
-    afiliado_beneficio_iD                           NUMBER NOT NULL,
-    estado                                          VARCHAR2 NOT NULL
-);
-CREATE TABLE Usos_beneficios(
-    id_usos                                         NUMBER NOT NULL,
-    fecha                                           DATE NOT NULL,
-    afiliado_beneficio_afiliado/beneficio_iD        NUMBER NOT NULL
+    rut_afiliado                                    NUMBER (11) NOT NULL,
+    id_beneficio                                    NUMBER NOT NULL,
+    afiliado_beneficio_id                           NUMBER NOT NULL,
+    estado                                          VARCHAR2 (250) NOT NULL,
+    fecha                                           DATE NOT NULL
 );
 CREATE TABLE Beneficios(
     id_beneficio                                    NUMBER NOT NULL,
     nombre_beneficio                                VARCHAR2 (250) NOT NULL
 );
-CREATE TABLE Historial_pago(
-    id_historial_pago                               NUMBER NOT NULL,
-    pagos_realizados                                VARCHAR2 (250) NOT NULL,
-    deudas                                          VARCHAR2 (250) NOT NULL,
-    fecha_pago                                      DATE NOT NULL,
-    afiliado_rut_postulante                         NUMBER NOT NULL,
-    pago_id_pago                                    NUMBER NOT NULL
-);
 CREATE TABLE Pago(
     id_pago                                         NUMBER NOT NULL,
     pago_inicial                                    VARCHAR2 (250) NOT NULL,
     pago_mensual                                    VARCHAR2 (250) NOT NULL,
-    banco_id_banco                                  NUMBER NOT NULL,
-    tipo_de_pago_id_tipo_pago                       NUMBER NOT NULL,
-    pago_cheque_id_cheque                           NUMBER NOT NULL
+    id_banco                                        NUMBER NOT NULL,
+    id_tipo_pago                                    NUMBER NOT NULL,
+    id_cheque                                       NUMBER NOT NULL,
+    id_forma_pago                                   NUMBER NOT NULL,
+    fecha                                           DATE NOT NULL,
+    rut_afiliado                                    NUMBER (11) NOT NULL
 );
 CREATE TABLE Tipo_de_pago(
     id_tipo_pago                                    NUMBER NOT NULL,
-    efectivo                                        NUMBER NOT NULL,
-    transferencia                                   NUMBER NOT NULL
+    anual                                           DATE NOT NULL,
+    mensual                                         DATE NOT NULL
 );
-CREATE TABLE Pago_cheque (
+CREATE TABLE Forma_pago( 
+    id_forma_pago                                   NUMBER NOT NULL,
+    efectivo                                        DATE NOT NULL,
+    transferencia                                   DATE NOT NULL
+);
+CREATE TABLE Cheque(
     id_cheque                                       NUMBER NULL,
     numero_de_cheque                                NUMBER NULL
 );
-CREATE TABLE BANCO (
+CREATE TABLE Banco(
     id_banco                                        NUMBER NULL,
     nombre                                          VARCHAR2(250) NULL
 );
 --2) LLAVES PRIMARIAS
 ALTER TABLE Empresa ADD CONSTRAINT empresa_PK PRIMARY KEY (id_empresa);
-ALTER TABLE Aseguradora_vehículos ADD CONSTRAINT aseguradora_vehículos_PK PRIMARY KEY (id_aseguradora);
-ALTER TABLE Aseguradora/vehículo 
-    ADD CONSTRAINT aseguradora/vehículo_PK PRIMARY KEY (id_aseguradora, id_vehículo);
-ALTER TABLE Vehículo ADD CONSTRAINT vehículo_PK PRIMARY KEY (Patente);
+ALTER TABLE Aseguradora ADD CONSTRAINT aseguradora_PK PRIMARY KEY (id_aseguradora);
+ALTER TABLE Vehículos ADD CONSTRAINT vehículos_PK PRIMARY KEY (Patente);
 ALTER TABLE Colores ADD CONSTRAINT colores_PK PRIMARY KEY (id_color);
 ALTER TABLE Modelos ADD CONSTRAINT modelos_PK PRIMARY KEY (id_modelos);
 ALTER TABLE Marcas ADD CONSTRAINT marcas_PK PRIMARY KEY (id_marcas);
 ALTER TABLE Tipo_vehículo ADD CONSTRAINT tipo_vahículo_PK PRIMARY KEY (id_tipo_vehículo);
-ALTER TABLE Registro_historico ADD CONSTRAINT registro_historico_PK PRIMARY KEY (id_registro);
-ALTER TABLE Postulante ADD CONSTRAINT postulante_PK PRIMARY KEY (rut_postulante);
+ALTER TABLE Postulantes ADD CONSTRAINT postulantes_PK PRIMARY KEY (rut_postulante);
 ALTER TABLE Discapacidad ADD CONSTRAINT discapacidad_PK PRIMARY KEY (id_discapacidad);
-ALTER TABLE Postulante/discapacidad 
-    ADD CONSTRAINT postulante/discapacidad_PK PRIMARY KEY (rut_postulante, id_discapacidad);
 ALTER TABLE Curriculum_vitae ADD CONSTRAINT curriculum_vitae_PK PRIMARY KEY (id_curriculum);
 ALTER TABLE Comuna ADD CONSTRAINT comuna_PK PRIMARY KEY (id_comuna);
 ALTER TABLE Provincia ADD CONSTRAINT provincia_PK PRIMARY KEY (id_provincia);
 ALTER TABLE Region ADD CONSTRAINT region_PK PRIMARY KEY (id_region);
 ALTER TABLE Cargas ADD CONSTRAINT cargas_PK PRIMARY KEY (rut);
 ALTER TABLE Telefono ADD CONSTRAINT telefono_PK PRIMARY KEY (id_telefono);
-ALTER TABLE Telefono_postulante 
-    ADD CONSTRAINT Telefono_postulante_PK PRIMARY KEY (rut, id_telefono);
+ALTER TABLE Telefono_postulante ADD CONSTRAINT telefono_postulante_PK PRIMARY KEY (telefono_postulante_id);
+ALTER TABLE Tipo_telefono ADD CONSTRAINT tipo_telefono_PK PRIMARY KEY (id_tipo_telefono);
 ALTER TABLE Afiliado ADD CONSTRAINT afiliado_PK PRIMARY KEY (rut_afiliado);
-ALTER TABLE Telefono_afiliados 
-    ADD CONSTRAINT telefono_afiliados_PK PRIMARY KEY (rut_afiliado, id_telefono);
 ALTER TABLE Nacionalidad ADD CONSTRAINT nacionalidad_PK PRIMARY KEY (numero_de_pasaporte);
-ALTER TABLE Beneficios ADD CONSTRAINT beneficios_PK PRIMARY KEY (id_beneficios);
-ALTER TABLE Afiliado_beneficio 
-    ADD CONSTRAINT Afiliado_beneficio_PK PRIMARY KEY (rut_afiliado, id_beneficio);
-ALTER TABLE Usos_beneficios ADD CONSTRAINT usos_beneficios_PK PRIMARY KEY (id_usos);
-ALTER TABLE Historial_pago ADD CONSTRAINT historial_pago_PK PRIMARY KEY (id_historial_pago);
+ALTER TABLE Beneficios ADD CONSTRAINT beneficios_PK PRIMARY KEY (id_beneficio);
+ALTER TABLE Afiliado_beneficio ADD CONSTRAINT Afiliado_beneficio_PK PRIMARY KEY (afiliado_beneficio_id);
 ALTER TABLE Pago ADD CONSTRAINT pago_PK PRIMARY KEY (id_pago);
-ALTER TABLE Tipo_de_pago ADD CONSTRAINT tipo_de_pago_PK PRIMARY KEY (id_tipo_de_pago);
-ALTER TABLE Pago_cheque ADD CONSTRAINT pago_cheque_PK PRIMARY KEY (id_cheque);
+ALTER TABLE Tipo_de_pago ADD CONSTRAINT tipo_de_pago_PK PRIMARY KEY (id_tipo_pago);
+ALTER TABLE Forma_pago ADD CONSTRAINT forma_pago_PK PRIMARY KEY (id_forma_pago);
+ALTER TABLE Cheque ADD CONSTRAINT cheque_PK PRIMARY KEY (id_cheque);
 ALTER TABLE BANCO ADD CONSTRAINT banco_PK PRIMARY KEY (id_banco);
 --3) Claves foraneas
-ALTER TABLE Aseguradora_vehículos ADD CONSTRAINT Aseguradora_vehículos_id_empresa_FK FOREIGN KEY (id_empresa);
-    REFERENCES Empresa(id_empresa);
-ALTER TABLE Aseguradora_vehículo ADD CONSTRAINT Aseguradora_vehículo_id_aseguradora_FK FOREIGN KEY (id_aseguradora);
-    REFERENCES Aseguradora_vehículos(id_aseguradora);
-ALTER TABLE Aseguradora_vehículo ADD CONSTRAINT Aseguradora_vehículo_patente_FK FOREIGN KEY (patente);
+ALTER TABLE Empresa ADD CONSTRAINT empresa_id_aseguradora_FK FOREIGN KEY (id_aseguradora)
+    REFERENCES Aseguradora(id_aseguradora);
+ALTER TABLE Aseguradora_vehículo ADD CONSTRAINT aseguradora_vehículo_id_aseguradora_FK FOREIGN KEY (id_aseguradora)
+    REFERENCES Aseguradora(id_aseguradora);
+ALTER TABLE Aseguradora_vehículo ADD CONSTRAINT aseguradora_vehículo_patente_FK FOREIGN KEY (patente)
     REFERENCES Vehículos(patente);
-ALTER TABLE Vehículos ADD CONSTRAINT vehículos_id_color_FK FOREIGN KEY (id_color);
+ALTER TABLE Vehículos ADD CONSTRAINT vehículos_id_color_FK FOREIGN KEY (id_color)
     REFERENCES Colores(id_color);
-ALTER TABLE Vehículos ADD CONSTRAINT vehículos_id_modelos_FK FOREIGN KEY (id_modelos);  
+ALTER TABLE Vehículos ADD CONSTRAINT vehículos_id_modelos_FK FOREIGN KEY (id_modelos)
     REFERENCES Modelos(id_Modelos);
-ALTER TABLE Vehículos ADD CONSTRAINT vehículos_id_tipos_vehículos_FK FOREIGN KEY (id_tipos_vehículos); 
-    REFERENCES Tipo_vehículo(id_tipos_vehículos);
-ALTER TABLE Modelos ADD CONSTRAINT Modelos_id_marcas_FK FOREIGN KEY (id_marcas); 
+ALTER TABLE Vehículos ADD CONSTRAINT vehículos_id_tipo_vehículo_FK FOREIGN KEY (id_tipo_vehículo)
+    REFERENCES Tipo_vehículo(id_tipo_vehículo);
+ALTER TABLE Modelos ADD CONSTRAINT modelos_id_marcas_FK FOREIGN KEY (id_marcas)
     REFERENCES Marcas(id_marcas);
-ALTER TABLE Registro_historico ADD CONSTRAINT Registro_historico_id_empresa_FK FOREIGN KEY (id_empresa); 
-    REFERENCES Empresa(id_empresa);
-ALTER TABLE Registro_historico ADD CONSTRAINT Registro_historico_rut_postulante_FK FOREIGN KEY (rut_postulante);     
-    REFERENCES Postulante(rut_postulante);
-ALTER TABLE Postulante ADD CONSTRAINT Postulante_id_comuna_FK FOREIGN KEY (id_comuna);    
-    REFERENCES Comuna(id_comuna);
-ALTER TABLE Postulante ADD CONSTRAINT Postulante_telefono_postulante_id FOREIGN KEY (telefono_postulante_id);    
-    REFERENCES Telefono_postulante(telefono_postulante_id);
-ALTER TABLE Curriculum_vitae ADD CONSTRAINT Curriculum_vitae_rut_postulante_FK FOREIGN KEY (rut_postulante);
-    REFERENCES Postulante(rut_postulante);
-ALTER TABLE Postulante_discapacidad ADD CONSTRAINT Postulante_discapacidad_rut_postulante_FK FOREIGN KEY (rut_postulante);
-    REFERENCES Postulante(rut_postulante);
-ALTER TABLE Postulante_discapacidad ADD CONSTRAINT Postulante_discapacidad_id_discapacidad_FK FOREIGN KEY (id_discapacidad);  
-    REFERENCES Discapacidad(id_discapacidad);
-ALTER TABLE Comuna ADD CONSTRAINT Comuna_id_provincia_FK FOREIGN KEY (id_provincia);
-    REFERENCES Provincia(id_provincia);
-ALTER TABLE Provincia ADD CONSTRAINT Provincia_id_region_FK FOREIGN KEY (id_region);
-    REFERENCES Provincia(id_provincia);
-ALTER TABLE Cargas ADD CONSTRAINT Cargas_rut_postulante_FK FOREIGN KEY (rut_postulante);  
-    REFERENCES Postulante(rut_postulante);
-ALTER TABLE Telefono_postulante ADD CONSTRAINT Telefono_postulante_id_telefono_FK FOREIGN KEY (id_telefono);
-    REFERENCES Telefono(id_telefono);
-ALTER TABLE Telefono_afiliados ADD CONSTRAINT Telefono_afiliados_id_telefono_FK FOREIGN KEY (id_telefono);
-    REFERENCES Telefono(id_telefono);
-ALTER TABLE Nacionalidad ADD CONSTRAINT Nacionalidad_rut_postulante_FK FOREIGN KEY (rut_postulante);
-    REFERENCES Telefono(rut_postulante);
-ALTER TABLE Afiliado ADD CONSTRAINT Afiliado_numero_de_pasaporte_FK FOREIGN KEY (numero_de_pasaporte); 
+ALTER TABLE Afiliado ADD CONSTRAINT afiliado_numero_de_pasaporte_FK FOREIGN KEY (numero_de_pasaporte)
     REFERENCES Nacionalidad(numero_de_pasaporte);
-ALTER TABLE Afiliado ADD CONSTRAINT Afiliado_id_empresa_FK FOREIGN KEY (id_empresa);  
+ALTER TABLE Afiliado ADD CONSTRAINT afiliado_id_empresa_FK FOREIGN KEY (id_empresa)  
     REFERENCES Empresa(id_empresa);
-ALTER TABLE Afiliado_beneficio ADD CONSTRAINT Afiliado_beneficio_rut_postulante_FK FOREIGN KEY (rut_postulante);
-    REFERENCES Afiliado(rut_postulante);
-ALTER TABLE Afiliado_beneficio ADD CONSTRAINT Afiliado_beneficio_id_beneficio_FK FOREIGN KEY (id_beneficio);
-    REFERENCES Beneficiosid_beneficio);
-ALTER TABLE Historial_pago ADD CONSTRAINT Historial_pago_rut_afiliado_FK FOREIGN KEY (rut_afiliado); 
+ALTER TABLE Afiliado_discapacidad ADD CONSTRAINT afiliado_discapacidad_id_discapacidad_FK FOREIGN KEY (id_discapacidad)
+    REFERENCES Discapacidad(id_discapacidad);    
+ALTER TABLE Afiliado_discapacidad ADD CONSTRAINT afiliado_discapacidad_rut_afiliado_FK FOREIGN KEY (rut_afiliado)
+    REFERENCES Afiliado(rut_afiliado);     
+ALTER TABLE Postulantes ADD CONSTRAINT postulantes_id_comuna_FK FOREIGN KEY (id_comuna)    
+    REFERENCES Comuna(id_comuna);
+ALTER TABLE Postulantes ADD CONSTRAINT postulantes_telefono_postulante_id FOREIGN KEY (telefono_postulante_id)   
+    REFERENCES Telefono_postulante(telefono_postulante_id);
+ALTER TABLE Curriculum_vitae ADD CONSTRAINT curriculum_vitae_rut_postulante_FK FOREIGN KEY (rut_postulante)
+    REFERENCES Postulantes(rut_postulante);
+ALTER TABLE Postulante_discapacidad ADD CONSTRAINT postulante_discapacidad_rut_postulante_FK FOREIGN KEY (rut_postulante)
+    REFERENCES Postulantes(rut_postulante);
+ALTER TABLE Postulante_discapacidad ADD CONSTRAINT postulante_discapacidad_id_discapacidad_FK FOREIGN KEY (id_discapacidad)  
+    REFERENCES Discapacidad(id_discapacidad);
+ALTER TABLE Comuna ADD CONSTRAINT comuna_id_provincia_FK FOREIGN KEY (id_provincia)
+    REFERENCES Provincia(id_provincia);
+ALTER TABLE Provincia ADD CONSTRAINT provincia_id_region_FK FOREIGN KEY (id_region)
+    REFERENCES Provincia(id_provincia);
+ALTER TABLE Cargas ADD CONSTRAINT cargas_rut_postulante_FK FOREIGN KEY (rut_postulante)  
+    REFERENCES Postulantes(rut_postulante);
+ALTER TABLE Telefono_postulante ADD CONSTRAINT telefono_postulante_id_telefono_FK FOREIGN KEY (id_telefono)
+    REFERENCES Telefono(id_telefono);
+ALTER TABLE Telefono ADD CONSTRAINT Telefono_id_tipo_telefono_FK FOREIGN KEY (id_tipo_telefono)
+    REFERENCES Tipo_telefono(id_tipo_telefono);
+ALTER TABLE Telefono_afiliado ADD CONSTRAINT Telefono_afiliado_id_telefono_FK FOREIGN KEY (id_telefono)
+    REFERENCES Telefono(id_telefono);
+ALTER TABLE Nacionalidad ADD CONSTRAINT nacionalidad_rut_postulante_FK FOREIGN KEY (rut_postulante)
+    REFERENCES Postulantes(rut_postulante);
+ALTER TABLE Afiliado_beneficio ADD CONSTRAINT afiliado_beneficio_rut_afiliado_FK FOREIGN KEY (rut_afiliado)
     REFERENCES Afiliado(rut_afiliado);
-ALTER TABLE Historial_pago ADD CONSTRAINT Historial_pago_id_pago_FK FOREIGN KEY (id_pago);
-    REFERENCES Pago(id_pago);
-ALTER TABLE Pago ADD CONSTRAINT Pago_id_banco_FK FOREIGN KEY (id_banco);   
-    REFERENCES BancoPago_cheque(id_banco);
-ALTER TABLE Tipo_de_pago ADD CONSTRAINT Pago_id_tipo_pago_FK FOREIGN KEY (id_tipo_pago); 
-    REFERENCES Pago(id_tipo_pago);
-ALTER TABLE Pago ADD CONSTRAINT Pago_id_cheque_FK FOREIGN KEY (id_chequeBancoPago_cheque);
-    REFERENCES Pago_cheque(id_chequeBancoPago_cheque);
-ALTER TABLE Usos_beneficios ADD CONSTRAINT Usos_beneficios_afiliado_beneficio_id_FK FOREIGN KEY (afiliado_beneficio_id); 
-    REFERENCES Afiliado_beneficio(afiliado_beneficio_id);
+ALTER TABLE Afiliado_beneficio ADD CONSTRAINT Afiliado_beneficio_id_beneficio_FK FOREIGN KEY (id_beneficio)
+    REFERENCES Beneficios(id_beneficio);
+ALTER TABLE Pago ADD CONSTRAINT pago_id_banco_FK FOREIGN KEY (id_banco)   
+    REFERENCES Banco(id_banco);
+ALTER TABLE Pago ADD CONSTRAINT Pago_id_tipo_pago_FK FOREIGN KEY (id_tipo_pago)
+    REFERENCES Tipo_de_pago(id_tipo_pago);
+ALTER TABLE Pago ADD CONSTRAINT Pago_id_cheque FOREIGN KEY (id_cheque)
+    REFERENCES Cheque(id_cheque);    
+ALTER TABLE Pago ADD CONSTRAINT Pago_id_forma_pago_FK FOREIGN KEY (id_forma_pago)
+    REFERENCES Forma_pago(id_forma_pago);
+ALTER TABLE Pago ADD CONSTRAINT Pago_rut_afiliado_FK FOREIGN KEY (rut_afiliado)
+    REFERENCES Afiliado(rut_afiliado);    
 --4) Insert de datos en las tablas
-INSERT INTO Regiones VALUES (1, 'Santiago');
-INSERT INTO Regiones VALUES (2, 'Arica');
-INSERT INTO Regiones VALUES (3, 'Antofagasta');
-INSERT INTO Regiones VALUES (4, 'Valparaiso');
 
-INSERT INTO Provincia VALUES (1, 'Provincia de Arica');
-INSERT INTO Provincia VALUES (2, 'Provincia de Santiago');
-INSERT INTO Provincia VALUES (3, 'Provincia de Maipo');
-INSERT INTO Provincia VALUES (4, 'Provincia de Curicó');
+INSERT INTO Aseguradora VALUES (1, 'Mapfre');
+INSERT INTO Aseguradora VALUES (2, 'RSA');
+INSERT INTO Aseguradora VALUES (3, 'Pelayo');
 
-INSERT INTO Comuna VALUES (1, 'Peñalolen');
-INSERT INTO Comuna VALUES (2, 'El Bosque');
-INSERT INTO Comuna VALUES (3, 'Conchali');
-INSERT INTO Comuna VALUES (4, 'Cerrillos');
+INSERT INTO Empresa VALUES (1,'SINTAC',1);
+
+INSERT INTO Region VALUES (1, 'Santiago');
+INSERT INTO Region VALUES (2, 'Arica');
+INSERT INTO Region VALUES (3, 'Antofagasta');
+INSERT INTO Region VALUES (4, 'Valparaiso');
+
+INSERT INTO Provincia VALUES (1, 'Provincia_de_Arica', 1);
+INSERT INTO Provincia VALUES (2, 'Provincia_de_Santiago', 1);
+INSERT INTO Provincia VALUES (3, 'Provincia_de_Maipo', 1);
+INSERT INTO Provincia VALUES (4, 'Provincia_de_Curico', 1);
+
+INSERT INTO Comuna VALUES (1, 'Peñalolen', 1);
+INSERT INTO Comuna VALUES (2, 'El_Bosque', 1);
+INSERT INTO Comuna VALUES (3, 'Conchali', 1);
+INSERT INTO Comuna VALUES (4, 'Cerrillos', 1);
 
 INSERT INTO Tipo_telefono VALUES (1, 'Casa');
 INSERT INTO Tipo_telefono VALUES (2, 'Movil');
-INSERT INTO Tipo_Telefono VALUES (3, 'Trabajo');
+INSERT INTO Tipo_telefono VALUES (3, 'Trabajo');
 
-INSERT INTO Telefono VALUES (1, '226578438');
-INSERT INTO Telefono VALUES (2, '954731980');
-INSERT INTO Telefono VALUES (3, '223598317');
+INSERT INTO Telefono VALUES (1, '226578438', 1);
+INSERT INTO Telefono VALUES (2, '954731980', 1);
+INSERT INTO Telefono VALUES (3, '223598317', 1);
+INSERT INTO Telefono VALUES (4, '977542903', 1);
 
-INSERT INTO Telefono_afiliados VALUES(1, 'Telefono Juan');
-INSERT INTO Telefono_afiliados VALUES(2, 'Telefono Pedro');
-INSERT INTO Telefono_afiliados VALUES(3, 'Telefono Judas');
-INSERT INTO Telefono_afiliados VALUES(4, 'Telefono Lazaro');
+INSERT INTO Telefono_postulante VALUES (1, '1');
+INSERT INTO Telefono_postulante VALUES (2, '2');
+INSERT INTO Telefono_postulante VALUES (3, '3');
 
-INSERT INTO Nacionalidad VALUES(1, 'Chilena');
-INSERT INTO Nacionalidad VALUES(2, 'Bolibiana');
-INSERT INTO Nacionalidad VALUES(3, 'Peruana');
+INSERT INTO Postulantes VALUES (15438207-6, '10/06/1985', 'Alfonso', 'Andres', 'Contreraz', 'Pelayo', 1, 1, 21352563, '24/04/2022');
+INSERT INTO Postulantes VALUES (16438207-6, '15/08/1987', 'Rigoberto', 'Anson', 'Adison', 'Pinilla', 2, 2, 67321456, '22/03/2022');
+INSERT INTO Postulantes VALUES (20283610-8, '08/08/2000', 'Michelle', 'Aline', 'Flores', 'Araneda', 3, 3, 72947234, '15/01/2022');
 
-INSERT INTO Empresa VALUES(1, 'SINTAC');
+INSERT INTO Nacionalidad VALUES (21352563,'Chilena',15438207-6);
+INSERT INTO Nacionalidad VALUES (67321456,'Boliviana',16438207-6);
+INSERT INTO Nacionalidad VALUES (72947234,'Peruana',20283610-8);
 
-INSERT INTO Afiliados VALUES(1, 'Juan');
-INSERT INTO Afiliados VALUES(2, 'Pedro');
-INSERT INTO Afiliados VALUES(3, 'Judas');
-INSERT INTO Afiliados VALUES(4, 'Lazaro');
-
-INSERT INTO Afiliado VALUES(1,'K', 'Juan', 'Aurelio', 'Fernandez', '04/06/89', '',123123,1,2,1,2,3,1,1,1,1);
+INSERT INTO Afiliado VALUES (12345678-9,'13/05/1980', 'Juan', 'Aurelio', 'Fernandez', 'Arsendiga',21352563,1);
 
 --5) SELECT
-SELECT * FROM Regiones;
+SELECT * FROM Aseguradora;
+SELECT * FROM Empresa;
+SELECT * FROM Region;
 SELECT * FROM Provincia;
 SELECT * FROM Comuna;
 SELECT * FROM Tipo_telefono;
 SELECT * FROM Telefono;
-SELECT * FROM Telefono_afiliados;
+SELECT * FROM Telefono_postulante;
+SELECT * FROM Postulantes;
 SELECT * FROM Nacionalidad;
-SELECT * FROM Empresa;
-SELECT * FROM Afiliados;
+SELECT * FROM Afiliado;
